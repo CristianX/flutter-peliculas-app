@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // Widget personalizado
 import 'package:peliculas/src/widgets/card_swiper_widget.dart';
 
+// Servicios
+import 'package:peliculas/src/providers/peliculas_provider.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,11 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _swiperTarjetas() {
+
+    final peliculasProvider = new PeliculasProvider();
+
+    peliculasProvider.getEnCines();
+
     // Utilizando swiper de widgets personalizados
     return CardSwiper( 
       peliculas: [1,2,3,4,5],
