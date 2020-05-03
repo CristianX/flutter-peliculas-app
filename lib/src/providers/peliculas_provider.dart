@@ -14,30 +14,42 @@ class PeliculasProvider {
   String _language = 'es-ES';
 
 
-// Llamando peliculas en cines
-Future<List<Pelicula>> getEnCines() async {
+  // Llamando peliculas en cines
+  Future<List<Pelicula>> getEnCines() async {
 
-  final url = Uri.https(_url, '3/movie/now_playing', {
-    'api_key' : _apikey,
-    'language' : _language
-  });
+    final url = Uri.https(_url, '3/movie/now_playing', {
+      'api_key' : _apikey,
+      'language' : _language
+    });
 
-  // llamando desde url
-  final resp =  await http.get( url );
+    return await _procesarRespuesta(url);
 
-  // Decodificando respuesta
-  final decodeData = json.decode(resp.body);
+  }
 
-  // print( decodeData['results'] );
+  // Llamando peliculas populares
+  Future<List<Pelicula>> getPopulares() async {
+    final url = Uri.https(_url, '3/movie/popular', {
+      'api_key' : _apikey,
+      'languge' : _language
+    });
 
-  // fromJsonList se encarga de barrer cada uno de los resultados que se encuentran en esa lista y genera las pelicuas (clase creada en el model de pelicula)
-  final peliculas = new Peliculas.fromJsonList(decodeData['results']);
+  return await _procesarRespuesta(url);
+    
 
-  // print(peliculas.items[3].title);
-
-  return peliculas.items;
 
 }
 
 
+// Metodo optimizado
+Future <List<Pelicula>> _procesarRespuesta( Uri url ) async {
+  // Llamado desde url
+    final resp = await http.get(url);
+
+    // Decodificando respuesta
+    final decodeData = json.decode(resp.body);
+
+    final peliculasPopulares = new Peliculas.fromJsonList(decodeData['results']);
+
+    return peliculasPopulares.items;
+  }
 }

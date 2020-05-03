@@ -26,7 +26,7 @@ class CardSwiper extends StatelessWidget {
       // Swiper se lo debe encerrar en un container y especificar dimensiones ya que no renderiza
       // double.infinity usa todo el ancho posible de la página
       // width: double.infinity,
-      padding: EdgeInsetsDirectional.only( top: 10.0 ),
+      padding: EdgeInsetsDirectional.only( top: 5.0 ),
       child: Swiper(
         // itemBuilder parecido al Future Builder
           itemBuilder: (BuildContext context,int index){
