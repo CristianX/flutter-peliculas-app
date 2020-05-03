@@ -77,6 +77,18 @@ class Pelicula {
     
   }
 
+// Retornando poster de pelicula
+  getPosterImg() {
+
+    if( posterPath == null ) {
+      return 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.bmajestic.com.mx%2Fimages%2FDefault_Dress.jpg&f=1&nofb=1';
+    } else {
+
+      return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    }
+
+  }
+
 
 
 

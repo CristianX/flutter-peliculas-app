@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 // Swiper
 import 'package:flutter_swiper/flutter_swiper.dart';
 
+// Importando modelo de la pelicula
+import 'package:peliculas/src/models/pelicula_model.dart';
+
 class CardSwiper extends StatelessWidget {
 
   // Recibir argumento
-  final List<dynamic> peliculas;
+  final List<Pelicula> peliculas;
 
 
   // Constructor @requiered para que el envió de esta constante sea obligatoria
@@ -31,7 +34,11 @@ class CardSwiper extends StatelessWidget {
             // ClipRRect para redonddear bordes de la imagen
             return  ClipRRect( 
               borderRadius: BorderRadius.circular(20.0),
-              child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover),
+              child: FadeInImage(
+                image: NetworkImage( peliculas[index].getPosterImg() ),
+                placeholder: AssetImage('assets/img/no-image.jpg'),
+                fit: BoxFit.cover,
+              )
              );
              
           },

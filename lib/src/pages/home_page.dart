@@ -7,6 +7,12 @@ import 'package:peliculas/src/widgets/card_swiper_widget.dart';
 import 'package:peliculas/src/providers/peliculas_provider.dart';
 
 class HomePage extends StatelessWidget {
+
+
+
+  final peliculasProvider = new PeliculasProvider();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +46,32 @@ class HomePage extends StatelessWidget {
 
   Widget _swiperTarjetas() {
 
-    final peliculasProvider = new PeliculasProvider();
 
     peliculasProvider.getEnCines();
 
+    return FutureBuilder(
+      future: peliculasProvider.getEnCines(),
+      // initialData: InitialData,
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        // Snapshot cuando se lo llama del Future tiene la data que retorna de peliculas
+        if ( snapshot.hasData ){
+          return CardSwiper( peliculas: snapshot.data );
+        } else {
+          // Se muestra unicamente cuando no se tiene informacion o cuando el future se está resolviendo
+          return Container(
+            height: 400.0,
+            child: Center(
+              child: CircularProgressIndicator()
+            )
+          );
+        }
+
+      },
+    );
+
     // Utilizando swiper de widgets personalizados
-    return CardSwiper( 
-      peliculas: [1,2,3,4,5],
-     );
+    // return CardSwiper( 
+    //   peliculas: [1,2,3,4,5],
+    //  );
   }
 }
