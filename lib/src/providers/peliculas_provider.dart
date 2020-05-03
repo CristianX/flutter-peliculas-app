@@ -1,6 +1,10 @@
 
+
 import 'package:peliculas/src/certificate/certificate.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
+
+// Stream Controller
+import 'dart:async';
 
 // Paquete http
 import 'package:http/http.dart' as http ;
@@ -12,6 +16,25 @@ class PeliculasProvider {
   String _apikey =  Certificate().apiKey ;
   String _url = 'api.themoviedb.org';
   String _language = 'es-ES';
+  
+  // Página de populares
+  int _popularesPage = 0;
+
+  // Corriente de datos
+  List<Pelicula> _populares = new List();
+
+  final _popularesStreamController = StreamController<List<Pelicula>>.broadcast();
+
+  // Insertar información al stream
+  Function( List<Pelicula> ) get popularesSink => _popularesStreamController.sink.add;
+
+  // Escuchar todo lo que el stream emite
+  Stream<List<Pelicula>> get popularesStream => _popularesStreamController.stream;
+
+  // Para cerrar peticiones
+  void disposeStreams() {
+    _popularesStreamController?.close();
+  }
 
 
   // Llamando peliculas en cines
@@ -28,12 +51,23 @@ class PeliculasProvider {
 
   // Llamando peliculas populares
   Future<List<Pelicula>> getPopulares() async {
+    
+    _popularesPage++;
+
     final url = Uri.https(_url, '3/movie/popular', {
       'api_key' : _apikey,
-      'languge' : _language
+      'languge' : _language,
+      'page'    : _popularesPage.toString()
     });
 
-  return await _procesarRespuesta(url);
+
+    // Enviando al stream
+    final resp = await _procesarRespuesta(url);
+    _populares.addAll(resp);
+    popularesSink( _populares );
+
+
+    return resp;
     
 
 
