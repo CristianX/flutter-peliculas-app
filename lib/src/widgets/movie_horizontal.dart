@@ -7,14 +7,33 @@ class MovieHorizontal extends StatelessWidget {
 
   final List<Pelicula> peliculas;
 
-  MovieHorizontal( { @required this.peliculas } );
+  final Function siguientePagina;
 
+  MovieHorizontal( { @required this.peliculas, @required this.siguientePagina } );
+
+    // Listener para escuchar todo lo que suceda en el PageViewController
+    final _pageController = PageController(
+      initialPage: 1,
+      // Cuantas tarjetas se muestran en cada vista (viewport)
+      viewportFraction: 0.3,
+    );
 
   @override
   Widget build(BuildContext context) {
-    
+
     // Tomando medidas de la pantall
     final _screenSize = MediaQuery.of(context).size;
+
+    // Ejecutando el listener _pageController
+    _pageController.addListener(() {
+
+      if ( _pageController.position.pixels >= _pageController.position.maxScrollExtent - 200 ) {
+        // print('Cargar siguientes pelicuas');
+        siguientePagina();
+      }
+
+    });
+    
 
     return Container(
       // Solo el 20% de la pantalla
@@ -24,15 +43,10 @@ class MovieHorizontal extends StatelessWidget {
       child: PageView( 
         // Controlar deslizamiento
         pageSnapping: false,
-        // Paginació
-        controller: PageController(
-          initialPage: 1,
-          // Cuantas tarjetas se muestran en cada vista (viewport)
-          viewportFraction: 0.3,
+        controller: _pageController,
+        children: _tarjetas( context )
         ),
-        children: _tarjetas( context ),
-       ),
-    );
+       );
   }
 
   // Creando lista de peliculas en tarjetas
