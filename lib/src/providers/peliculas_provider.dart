@@ -20,6 +20,8 @@ class PeliculasProvider {
   // Página de populares
   int _popularesPage = 0;
 
+  bool _cargando = false;
+
   // Corriente de datos
   List<Pelicula> _populares = new List();
 
@@ -51,8 +53,14 @@ class PeliculasProvider {
 
   // Llamando peliculas populares
   Future<List<Pelicula>> getPopulares() async {
+
+    // Evitando peticiones http múltiples
+    if( _cargando ) return [];
+    _cargando = true;
     
     _popularesPage++;
+
+    // print('Cargando siguientes');
 
     final url = Uri.https(_url, '3/movie/popular', {
       'api_key' : _apikey,
@@ -66,6 +74,8 @@ class PeliculasProvider {
     _populares.addAll(resp);
     popularesSink( _populares );
 
+    // Cerrando petición
+    _cargando = false;
 
     return resp;
     

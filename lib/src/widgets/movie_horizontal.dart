@@ -40,19 +40,58 @@ class MovieHorizontal extends StatelessWidget {
       // * 0.2 para tomar el 20% de la pantalla
       height: _screenSize.height * 0.2,
       // PageWiew windget de flutter para deslizar como páginas
-      child: PageView( 
+      // PageView.builder renderiza los elementos cuando son necesarios
+      child: PageView.builder( 
         // Controlar deslizamiento
         pageSnapping: false,
         controller: _pageController,
-        children: _tarjetas( context )
-        ),
-       );
+        // children: _tarjetas( context )
+
+        // Especificando items a renderizar en el itemBuilder
+        itemCount: peliculas.length,
+        itemBuilder: ( context, i ) => _tarjeta(context, peliculas[i])
+      ),
+    );
   }
 
   // Creando lista de peliculas en tarjetas
-  List<Widget> _tarjetas( BuildContext context ) {
-    return peliculas.map(( pelicula ) {
-      return Container(
+  // List<Widget> _tarjetas( BuildContext context ) {
+  //   return peliculas.map(( pelicula ) {
+  //     return Container(
+  //       margin: EdgeInsets.only( right: 15.0 ),
+  //       // Para que se desplace verticalmente si la pantalla es demasiado pequeña
+  //       child: SingleChildScrollView(
+  //         child: Column(
+  //           children: <Widget>[
+  //             ClipRRect(
+  //               // Ezquinas
+  //               borderRadius: BorderRadius.circular(20.0),
+  //               child: FadeInImage(
+  //                 image: NetworkImage(pelicula.getPosterImg()),
+  //                 placeholder: AssetImage('assets/img/no-image.jpg'),
+  //                 fit: BoxFit.cover,
+  //                 height: 160.0,
+  //               ),
+  //             ),
+  //             SizedBox( height: 4.0 ),
+  //             Text(
+  //               pelicula.title,
+  //               // Coloca ... cuando el texto no cabe
+  //               overflow: TextOverflow.ellipsis,
+  //               style: Theme.of(context).textTheme.caption,
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   }).toList();
+  // }
+
+
+
+  // Tarjeta para pageview.builder
+  Widget _tarjeta( BuildContext context, Pelicula pelicula ) {
+    return Container(
         margin: EdgeInsets.only( right: 15.0 ),
         // Para que se desplace verticalmente si la pantalla es demasiado pequeña
         child: SingleChildScrollView(
@@ -79,6 +118,6 @@ class MovieHorizontal extends StatelessWidget {
           ),
         ),
       );
-    }).toList();
   }
+
 }
