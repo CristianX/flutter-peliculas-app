@@ -57,7 +57,7 @@ class Actor {
   getImagenActor() {
 
     if( profilePath == null ) {
-      return 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn3.iconfinder.com%2Fdata%2Ficons%2Ficonset-1-1%2F24%2Ficon_set_outlinder-05-512.png&f=1&nofb=1';
+      return 'https://cdn3.iconfinder.com/data/icons/iconset-1-1/24/icon_set_outlinder-05-512.png';
     } else {
       return 'https://image.tmdb.org/t/p/w500/$profilePath';
     }

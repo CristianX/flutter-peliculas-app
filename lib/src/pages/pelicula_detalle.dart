@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+
+// Modelos
 import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/models/actores_model.dart';
+
+// Servicios
+import 'package:peliculas/src/providers/peliculas_provider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
 
@@ -28,6 +34,7 @@ class PeliculaDetalle extends StatelessWidget {
                 _descripcion( pelicula ),
                 _descripcion( pelicula ),
                 _descripcion( pelicula ),
+                _crearCasting( pelicula )
               ]
             )
           )
@@ -102,6 +109,65 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(
         pelicula.overview,
         textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _crearCasting(Pelicula pelicula) {
+
+    final peliProvider = new PeliculasProvider();
+
+    return FutureBuilder(
+      future: peliProvider.getCastActores(pelicula.id.toString()),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if( snapshot.hasData ) {
+          return _crearActoresPageView( snapshot.data );
+        } else {
+          return Center( child: CircularProgressIndicator() );
+        }
+      },
+    );
+
+  }
+
+  Widget _crearActoresPageView(List<Actor> actores ) {
+
+    return SizedBox(
+      height: 200.0,
+      child: PageView.builder(
+        // No se necesita saber cuando se llega al fina por eso no se necesita una propiedad independiente
+        controller: PageController(
+          viewportFraction: 0.3,
+          initialPage: 1
+        ),
+        itemCount: actores.length,
+        itemBuilder: ( context, i ) => _actorTarjeta(actores[i]),
+        // Para que se mueva fluido
+        pageSnapping: false,
+
+      ),
+    );
+
+  }
+
+  Widget _actorTarjeta( Actor actor ) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              image: NetworkImage(actor.getImagenActor()),
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              height: 150.0,
+              fit: BoxFit.cover
+            ),
+          ),
+          Text(
+            actor.name,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
       ),
     );
   }
