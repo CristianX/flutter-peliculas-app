@@ -78,7 +78,7 @@ class PeliculaDetalle extends StatelessWidget {
         children: <Widget>[
           // Implementando callback de Hero Animation
           Hero(
-            tag: pelicula.id,
+            tag: pelicula.uniqueId,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: Image(

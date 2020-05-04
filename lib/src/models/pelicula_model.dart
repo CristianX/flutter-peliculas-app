@@ -26,6 +26,10 @@ class Peliculas {
 }
 
 class Pelicula {
+
+  // Para implementación de Hero Animation
+  String uniqueId;
+
   double popularity;
   int voteCount;
   bool video;

@@ -98,6 +98,7 @@ class HomePage extends StatelessWidget {
             ),
           SizedBox( height: 5.0 ),
           StreamBuilder(
+            // Llamando stream de peliculas_provider
             stream: peliculasProvider.popularesStream,
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               // haciendo foreach si existe data (data?)

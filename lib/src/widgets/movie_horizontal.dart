@@ -91,6 +91,9 @@ class MovieHorizontal extends StatelessWidget {
 
   // Tarjeta para pageview.builder
   Widget _tarjeta( BuildContext context, Pelicula pelicula ) {
+
+    pelicula.uniqueId = '${ pelicula.id }-horizontal';
+
     final peliculaTarjeta = Container(
         margin: EdgeInsets.only( right: 15.0 ),
         // Para que se desplace verticalmente si la pantalla es demasiado pequeña
@@ -100,7 +103,7 @@ class MovieHorizontal extends StatelessWidget {
               // Implementación de Hero Animation
               Hero(
                 // Se tiene que poner el mismo id único a donde va a llegar
-                tag: pelicula.id,
+                tag: pelicula.uniqueId,
                 child: ClipRRect(
                   // Ezquinas
                   borderRadius: BorderRadius.circular(20.0),
