@@ -97,14 +97,19 @@ class MovieHorizontal extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              ClipRRect(
-                // Ezquinas
-                borderRadius: BorderRadius.circular(20.0),
-                child: FadeInImage(
-                  image: NetworkImage(pelicula.getPosterImg()),
-                  placeholder: AssetImage('assets/img/no-image.jpg'),
-                  fit: BoxFit.cover,
-                  height: 160.0,
+              // Implementación de Hero Animation
+              Hero(
+                // Se tiene que poner el mismo id único a donde va a llegar
+                tag: pelicula.id,
+                child: ClipRRect(
+                  // Ezquinas
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: FadeInImage(
+                    image: NetworkImage(pelicula.getPosterImg()),
+                    placeholder: AssetImage('assets/img/no-image.jpg'),
+                    fit: BoxFit.cover,
+                    height: 160.0,
+                  ),
                 ),
               ),
               SizedBox( height: 4.0 ),

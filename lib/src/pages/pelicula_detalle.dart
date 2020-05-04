@@ -43,6 +43,7 @@ class PeliculaDetalle extends StatelessWidget {
     );
   }
 
+  // AppBar
   Widget _crearAppbar(Pelicula pelicula) {
     // SliverAppbar permite moverse conforme el scroll
     return SliverAppBar(
@@ -69,16 +70,21 @@ class PeliculaDetalle extends StatelessWidget {
     );
   }
 
+  // Contenido
   Widget _posterTitulo( BuildContext context, Pelicula pelicula) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image(
-              image: NetworkImage( pelicula.getPosterImg() ),
-              height: 150.0,
+          // Implementando callback de Hero Animation
+          Hero(
+            tag: pelicula.id,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: Image(
+                image: NetworkImage( pelicula.getPosterImg() ),
+                height: 150.0,
+              ),
             ),
           ),
           SizedBox(width: 20.0),
@@ -113,6 +119,7 @@ class PeliculaDetalle extends StatelessWidget {
     );
   }
 
+  // Footer
   Widget _crearCasting(Pelicula pelicula) {
 
     final peliProvider = new PeliculasProvider();
