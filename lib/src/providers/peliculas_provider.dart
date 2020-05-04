@@ -1,6 +1,9 @@
 
-
+// Certificado
 import 'package:peliculas/src/certificate/certificate.dart';
+
+// Modelos
+import 'package:peliculas/src/models/actores_model.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
 
 // Stream Controller
@@ -39,61 +42,83 @@ class PeliculasProvider {
   }
 
 
-  // Llamando peliculas en cines
-  Future<List<Pelicula>> getEnCines() async {
+    // Llamando peliculas en cines
+    Future<List<Pelicula>> getEnCines() async {
 
-    final url = Uri.https(_url, '3/movie/now_playing', {
+      final url = Uri.https(_url, '3/movie/now_playing', {
+        'api_key' : _apikey,
+        'language' : _language
+      });
+
+      return await _procesarRespuesta(url);
+
+    }
+
+    // Llamando peliculas populares
+    Future<List<Pelicula>> getPopulares() async {
+
+      // Evitando peticiones http múltiples
+      if( _cargando ) return [];
+      _cargando = true;
+      
+      _popularesPage++;
+
+      // print('Cargando siguientes $_popularesPage');
+
+      final url = Uri.https(_url, '3/movie/popular', {
+        'api_key' : _apikey,
+        'language' : _language,
+        'page'    : _popularesPage.toString()
+      });
+
+
+      // Enviando al stream
+      final resp = await _procesarRespuesta(url);
+      _populares.addAll(resp);
+      popularesSink( _populares );
+
+      // Cerrando petición
+      _cargando = false;
+
+      return resp;
+      
+
+
+  }
+
+
+  // Metodo optimizado
+  Future <List<Pelicula>> _procesarRespuesta( Uri url ) async {
+    // Llamado desde url
+      final resp = await http.get(url);
+
+      // Decodificando respuesta
+      final decodeData = json.decode(resp.body);
+
+      final peliculasPopulares = new Peliculas.fromJsonList(decodeData['results']);
+
+      return peliculasPopulares.items;
+    }
+
+
+  // Actores
+  Future<List<Actor>> getCastActores(String peliId ) async {
+
+    final url = Uri.https(_url, '3/movie/$peliId/credits', {
       'api_key' : _apikey,
       'language' : _language
     });
 
-    return await _procesarRespuesta(url);
-
-  }
-
-  // Llamando peliculas populares
-  Future<List<Pelicula>> getPopulares() async {
-
-    // Evitando peticiones http múltiples
-    if( _cargando ) return [];
-    _cargando = true;
-    
-    _popularesPage++;
-
-    // print('Cargando siguientes $_popularesPage');
-
-    final url = Uri.https(_url, '3/movie/popular', {
-      'api_key' : _apikey,
-      'language' : _language,
-      'page'    : _popularesPage.toString()
-    });
-
-
-    // Enviando al stream
-    final resp = await _procesarRespuesta(url);
-    _populares.addAll(resp);
-    popularesSink( _populares );
-
-    // Cerrando petición
-    _cargando = false;
-
-    return resp;
-    
-
-
-}
-
-
-// Metodo optimizado
-Future <List<Pelicula>> _procesarRespuesta( Uri url ) async {
-  // Llamado desde url
     final resp = await http.get(url);
+    
+    // Decodificando data para transformarlo a mapa
+    final decodedData = json.decode(resp.body);
 
-    // Decodificando respuesta
-    final decodeData = json.decode(resp.body);
+    final castActores = new CastActores.fromJsonList(decodedData['cast']);
 
-    final peliculasPopulares = new Peliculas.fromJsonList(decodeData['results']);
+    return castActores.actores;
 
-    return peliculasPopulares.items;
   }
+
+
 }
