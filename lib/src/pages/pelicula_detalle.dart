@@ -44,7 +44,7 @@ class PeliculaDetalle extends StatelessWidget {
       expandedHeight: 200.0,
       floating: false,
       // Para que se mantenga visible al hacer el scroll
-      pinned: true,
+      pinned: false,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
