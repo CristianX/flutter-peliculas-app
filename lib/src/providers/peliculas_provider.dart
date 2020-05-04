@@ -60,11 +60,11 @@ class PeliculasProvider {
     
     _popularesPage++;
 
-    // print('Cargando siguientes');
+    // print('Cargando siguientes $_popularesPage');
 
     final url = Uri.https(_url, '3/movie/popular', {
       'api_key' : _apikey,
-      'languge' : _language,
+      'language' : _language,
       'page'    : _popularesPage.toString()
     });
 

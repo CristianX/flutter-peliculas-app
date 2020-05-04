@@ -91,7 +91,7 @@ class MovieHorizontal extends StatelessWidget {
 
   // Tarjeta para pageview.builder
   Widget _tarjeta( BuildContext context, Pelicula pelicula ) {
-    return Container(
+    final peliculaTarjeta = Container(
         margin: EdgeInsets.only( right: 15.0 ),
         // Para que se desplace verticalmente si la pantalla es demasiado pequeña
         child: SingleChildScrollView(
@@ -117,6 +117,17 @@ class MovieHorizontal extends StatelessWidget {
             ],
           ),
         ),
+      );
+
+      // Generando el gesto de tap en las tarjetas del widget horizontal
+      return GestureDetector(
+        child: peliculaTarjeta,
+        onTap: (){
+          // print('Título de la película ${pelicula.title}');
+
+          // Navegando a la ruta de detalle pelicula
+          Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+        },
       );
   }
 
