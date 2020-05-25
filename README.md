@@ -2,6 +2,7 @@
 ### Instalación en pubspec.yaml dependencies
 - Flutter Swiper `flutter_swiper: ^1.1.6`
 - Flutter Http `http: ^0.12.1`
+- Flutter launcher icon `flutter_launcher_icons:` <!-- Configuración de ícono de la app -->
 
 ## Getting Started
 
